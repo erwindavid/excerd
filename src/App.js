@@ -4,8 +4,9 @@ import './App.css';
 import { useState, useEffect, useRef, useMemo } from 'react'
 
 function App() {
-    const z = {element1: 40, element2: 80}
-    const [scrollPosition, setScrollPosition] = useState(z)
+    const t = ['element3', 'element4']
+    const g = t.reduce((acc,item)=> ({...acc, [item]:0}),{})
+    const [scrollPosition, setScrollPosition] = useState(g)
     
     function handleScroll(id, scrollTop) {
         setScrollPosition( currentPosition => {
@@ -17,7 +18,7 @@ function App() {
     }
     
     function Element({id, scrollTop}) {
-        console.log('render')
+        // console.log('render')
         const ref = useRef(null)
         useEffect(()=> {
           if (ref) {ref.current.scrollTop = scrollTop}
@@ -34,7 +35,18 @@ function App() {
     
     return (
         <div className="App">
-        <Element id='element1' scrollTop={scrollPosition['element1']}/>
+        {Object.keys(scrollPosition).map(k=> {
+            return (
+            <>
+            <div>{k}:{scrollPosition[k]}</div>
+            <Element 
+                id={k} 
+                scrollTop={scrollPosition[k]} 
+            />
+            </>)
+            })
+        }
+    
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
